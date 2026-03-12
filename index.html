@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTT 24/7 | RealTimeTracking - Monitoreo GPS Colombia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+        }
+
+        .accent-orange {
+            color: #f97316;
+        }
+
+        .bg-accent-orange {
+            background-color: #f97316;
+        }
+
+        .location-pin {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .coverage-card {
+            transition: all 0.3s ease;
+        }
+
+        .coverage-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(249, 115, 22, 0.15);
+        }
+
+        .map-section {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+
+        .city-dot {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .city-dot::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background-color: #f97316;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(249, 115, 22, 0.6);
+        }
+    </style>
+</head>
+
+<body class="font-sans text-slate-800">
+
+    <!-- NAVBAR -->
+    <nav class="flex justify-between items-center px-10 py-5 bg-white shadow-sm sticky top-0 z-50">
+        <div class="flex items-center gap-2">
+            <div class="font-bold text-2xl tracking-tighter text-slate-900">RTT <span class="accent-orange">24/7</span>
+            </div>
+            <div class="text-[10px] uppercase leading-3 border-l pl-2 border-slate-300">RealTimeTracking<br>24-7</div>
+        </div>
+        <div class="hidden md:flex gap-8 font-medium text-sm text-slate-600">
+            <a href="/servicios.html" class="hover:text-orange-600 transition-colors">Servicios</a>
+            <a href="#" class="hover:text-orange-600 transition-colors">Plataforma</a>
+            <a href="#" class="hover:text-orange-600 transition-colors">Cobertura</a>
+            <a href="#" class="hover:text-orange-600 transition-colors">Contacto</a>
+        </div>
+        <button
+            class="border border-slate-300 px-5 py-2 rounded-lg text-sm font-semibold hover:bg-slate-50 transition-colors flex items-center gap-2">
+            <i class="fa-regular fa-user"></i> Inicia Sesión
+        </button>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero-gradient px-10 py-24 flex flex-col md:flex-row items-center gap-12">
+        <div class="md:w-1/2 space-y-8">
+            <div>
+                <h1 class="text-6xl font-extrabold text-slate-900 leading-tight mb-4">
+                    RTT 24/7
+                </h1>
+                <p class="text-2xl text-slate-700 font-semibold">Rastreo Vehicular en Tiempo Real</p>
+            </div>
+            <p class="text-lg text-slate-600 max-w-lg leading-relaxed">
+                Tranquilidad total para tu vehículo o flota en Colombia. Seguridad certificada con equipos Queclink y
+                plataforma Wialon - Monitoreo 24/7 con central activa.
+            </p>
+            <div class="flex gap-4 flex-wrap">
+                <button
+                    class="bg-accent-orange text-white px-8 py-4 rounded-lg font-bold text-lg shadow-lg hover:bg-orange-700 transition-all transform hover:scale-105">
+                    Demo y Cotización
+                </button>
+                <button
+                    class="border-2 border-accent-orange text-accent-orange px-8 py-4 rounded-lg font-bold text-lg hover:bg-orange-50 transition-all">
+                    Ver Cobertura
+                </button>
+            </div>
+            <div class="flex gap-6 pt-4">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-check text-orange-600 text-xl"></i>
+                    <span class="text-slate-700 font-semibold">Instalación Local</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-check text-orange-600 text-xl"></i>
+                    <span class="text-slate-700 font-semibold">Soporte 24/7</span>
+                </div>
+            </div>
+        </div>
+        <div class="md:w-1/2 flex justify-center">
+            <img src="imagenes/mapaLandingPage2.png" alt="Cobertura RTT 24/7 Colombia"
+                class="w-full max-w-md drop-shadow-xl">
+        </div>
+    </section>
+
+    <!-- COVERAGE SECTION -->
+    <section class="map-section px-10 py-20">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-extrabold text-slate-900 mb-4">Cobertura Nacional</h2>
+                <p class="text-xl text-slate-600 max-w-2xl mx-auto">Servicio de monitoreo GPS en tiempo real con
+                    técnicos de instalación en las principales ciudades de Colombia</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div class="coverage-card bg-white p-6 rounded-xl shadow-md border border-blue-100">
+                    <div class="city-dot mb-3"></div>
+                    <h3 class="font-bold text-lg text-slate-900">Barranquilla</h3>
+                    <p class="text-sm text-slate-500 mt-2">Costa Caribe • Cobertura Completa</p>
+                    <div class="mt-4 text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full inline-block">
+                        <i class="fa-solid fa-truck mr-1"></i> Logística
+                    </div>
+                </div>
+
+                <div class="coverage-card bg-white p-6 rounded-xl shadow-md border border-blue-100">
+                    <div class="city-dot mb-3"></div>
+                    <h3 class="font-bold text-lg text-slate-900">Medellín</h3>
+                    <p class="text-sm text-slate-500 mt-2">Región Andina • Centro</p>
+                    <div class="mt-4 text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full inline-block">
+                        <i class="fa-solid fa-wrench mr-1"></i> Servicio Técnico
+                    </div>
+                </div>
+
+                <div class="coverage-card bg-white p-6 rounded-xl shadow-md border border-blue-100">
+                    <div class="city-dot mb-3"></div>
+                    <h3 class="font-bold text-lg text-slate-900">Bogotá</h3>
+                    <p class="text-sm text-slate-500 mt-2">Andina Central • Capital</p>
+                    <div class="mt-4 text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full inline-block">
+                        <i class="fa-solid fa-headset mr-1"></i> Soporte Central
+                    </div>
+                </div>
+
+                <div class="coverage-card bg-white p-6 rounded-xl shadow-md border border-blue-100">
+                    <div class="city-dot mb-3"></div>
+                    <h3 class="font-bold text-lg text-slate-900">Cali</h3>
+                    <p class="text-sm text-slate-500 mt-2">Región Pacífica • Logística</p>
+                    <div class="mt-4 text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full inline-block">
+                        <i class="fa-solid fa-truck-moving mr-1"></i> Flota
+                    </div>
+                </div>
+
+                <div class="coverage-card bg-white p-6 rounded-xl shadow-md border border-blue-100">
+                    <div class="city-dot mb-3"></div>
+                    <h3 class="font-bold text-lg text-slate-900">Villavicencio</h3>
+                    <p class="text-sm text-slate-500 mt-2">Llanos Orientales</p>
+                    <div class="mt-4 text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full inline-block">
+                        <i class="fa-solid fa-car mr-1"></i> Expansión
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES SECTION -->
+    <section class="px-10 py-20 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-extrabold text-slate-900 text-center mb-16">Solución Integral de Rastreo</h2>
+
+            <div class="grid md:grid-cols-4 gap-6">
+                <div
+                    class="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl shadow-lg border border-blue-200">
+                    <div class="text-blue-600 text-5xl mb-6"><i class="fa-solid fa-desktop"></i></div>
+                    <h3 class="font-bold text-lg text-slate-900 mb-3">Plataforma WIALON</h3>
+                    <p class="text-slate-600">Monitoreo líder a nivel mundial con mapas de precisión, reportes
+                        automáticos y alertas en tiempo real.</p>
+                </div>
+
+                <div
+                    class="bg-gradient-to-br from-slate-50 to-slate-100 p-8 rounded-2xl shadow-lg border border-slate-200">
+                    <div class="text-slate-700 text-5xl mb-6"><i class="fa-solid fa-microchip"></i></div>
+                    <h3 class="font-bold text-lg text-slate-900 mb-3">Equipos QUECLINK</h3>
+                    <p class="text-slate-600">Hardware grado industrial con detección de jamming GPS, batería de
+                        emergencia y alta precisión de localización.</p>
+                </div>
+
+                <div
+                    class="bg-gradient-to-br from-orange-50 to-orange-100 p-8 rounded-2xl shadow-lg border border-orange-200">
+                    <div class="text-orange-600 text-5xl mb-6"><i class="fa-solid fa-clock"></i></div>
+                    <h3 class="font-bold text-lg text-slate-900 mb-3">Monitoreo 24/7</h3>
+                    <p class="text-slate-600">Central de monitoreo activa permanentemente para reaccionar ante cualquier
+                        emergencia o incidente.</p>
+                </div>
+
+                <div
+                    class="bg-gradient-to-br from-emerald-50 to-emerald-100 p-8 rounded-2xl shadow-lg border border-emerald-200">
+                    <div class="text-emerald-600 text-5xl mb-6"><i class="fa-solid fa-wrench"></i></div>
+                    <h3 class="font-bold text-lg text-slate-900 mb-3">Instalación Experta</h3>
+                    <p class="text-slate-600">Técnicos certificados en Bogotá, Medellín, Ibagué, Villavicencio y Yopal
+                        para servicio local garantizado.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA SECTION -->
+    <section class="bg-gradient-to-r from-slate-900 to-slate-800 px-10 py-20 text-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl font-extrabold mb-6">¿Listo para Proteger tu Flota?</h2>
+            <p class="text-xl text-slate-300 mb-10">Solicita una demostración personalizada y cotización sin compromiso.
+                Nuestro equipo se contactará en 24 horas.</p>
+            <div class="flex gap-4 justify-center flex-wrap">
+                <button
+                    class="bg-accent-orange hover:bg-orange-700 text-white px-10 py-4 rounded-lg font-bold text-lg transition-all transform hover:scale-105 shadow-xl">
+                    <i class="fa-solid fa-phone mr-2"></i> Solicitar Demo
+                </button>
+                <button
+                    class="border-2 border-white hover:bg-white hover:text-slate-900 text-white px-10 py-4 rounded-lg font-bold text-lg transition-all">
+                    <i class="fa-solid fa-envelope mr-2"></i> Enviar Correo
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-300 px-10 py-12">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h4 class="font-bold text-white mb-4">RTT 24/7</h4>
+                    <p class="text-sm">Soluciones de rastreo GPS para vehículos y flotas en Colombia.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Servicios</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Monitoreo GPS</a></li>
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Alertas Inteligentes</a></li>
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Reportes</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Compañía</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Acerca de</a></li>
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Contacto</a></li>
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Soporte</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Síguenos</h4>
+                    <div class="flex gap-4 text-xl">
+                        <a href="#" class="hover:text-orange-500 transition-colors"><i
+                                class="fa-brands fa-facebook"></i></a>
+                        <a href="#" class="hover:text-orange-500 transition-colors"><i
+                                class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="hover:text-orange-500 transition-colors"><i
+                                class="fa-brands fa-whatsapp"></i></a>
+                        <a href="#" class="hover:text-orange-500 transition-colors"><i
+                                class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-slate-700 pt-8 flex flex-col md:flex-row justify-between items-center text-sm">
+                <p>© 2024 RTT 24/7. Todos los derechos reservados.</p>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-orange-500 transition-colors underline">Política de Privacidad</a>
+                    <a href="#" class="hover:text-orange-500 transition-colors underline">Términos de Servicio</a>
+                    <a href="#" class="hover:text-orange-500 transition-colors underline">Integraciones API</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
+</div>
+</div>
+</footer>
+
+</body>
+
+</html>

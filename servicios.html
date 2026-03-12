@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTT 24/7 | RealTimeTracking - Monitoreo GPS Colombia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+        }
+
+        .accent-orange {
+            color: #f97316;
+        }
+
+        .bg-accent-orange {
+            background-color: #f97316;
+        }
+
+        .location-pin {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .coverage-card {
+            transition: all 0.3s ease;
+        }
+
+        .coverage-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(249, 115, 22, 0.15);
+        }
+
+        .map-section {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+
+        .city-dot {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .city-dot::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background-color: #f97316;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(249, 115, 22, 0.6);
+        }
+
+        .service-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .service-card:hover::before {
+            left: 100%;
+        }
+
+        .service-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+        }
+
+        .step-card {
+            position: relative;
+            padding-bottom: 2rem;
+        }
+
+        .step-card::after {
+            content: '';
+            position: absolute;
+            bottom: -2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 2rem;
+            background: linear-gradient(180deg, rgba(249, 115, 22, 0.5), transparent);
+        }
+
+        .step-card:last-child::after {
+            display: none;
+        }
+
+        .plan-card {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .plan-card.featured {
+            transform: scale(1.05);
+            box-shadow: 0 25px 50px rgba(249, 115, 22, 0.2);
+        }
+
+        .plan-card.featured:hover {
+            transform: scale(1.05) translateY(-8px);
+        }
+
+        .faq-item {
+            transition: all 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            opacity: 1;
+            padding: 1rem 0;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+
+        .testimonial-card {
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(249, 115, 22, 0.15);
+        }
+    </style>
+</head>
+
+<body class="font-sans text-slate-800 bg-white">
+
+    <nav class="flex justify-between items-center px-6 md:px-10 py-5 bg-white shadow-sm sticky top-0 z-50">
+        <div class="flex items-center gap-2">
+            <a href="index.html" class="flex items-center gap-2">
+                <div class="font-bold text-2xl tracking-tighter text-slate-900">RTT <span
+                        class="accent-orange">24/7</span></div>
+                <div
+                    class="hidden sm:block text-[10px] uppercase leading-3 border-l pl-2 border-slate-300 text-slate-500">
+                    RealTimeTracking<br>24-7</div>
+            </a>
+        </div>
+        <div class="hidden md:flex gap-8 font-medium text-sm text-slate-600">
+            <a href="index.html" class="hover:text-orange-600">Inicio</a>
+            <a href="/servicios.html" class="text-orange-600 font-bold">Servicios</a>
+            <a href="#" class="hover:text-orange-600">Zonas</a>
+            <a href="#" class="hover:text-orange-600">Contacto</a>
+        </div>
+        <button
+            class="border border-slate-300 px-5 py-2 rounded-lg text-sm font-semibold hover:bg-slate-50 flex items-center gap-2">
+            <i class="fa-regular fa-user"></i> Inicia Sesión
+        </button>
+    </nav>
+
+    <header class="bg-slate-900 text-white py-20 px-6 md:px-10">
+        <div class="max-w-4xl">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6">Soluciones Profesionales de Monitoreo</h1>
+            <p class="text-xl text-slate-400 leading-relaxed">
+                No instalamos simples GPS. Implementamos sistemas de inteligencia vehicular con tecnología Queclink y
+                analítica avanzada en Wialon.
+            </p>
+        </div>
+    </header>
+
+    <section class="py-20 px-6 md:px-10 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-3 gap-8">
+
+                <div
+                    class="service-card bg-gradient-to-br from-orange-50 to-orange-100 p-8 rounded-2xl border border-orange-200 shadow-lg">
+                    <div class="bg-orange-200 w-16 h-16 flex items-center justify-center rounded-2xl mb-6">
+                        <i class="fa-solid fa-shield-halved text-orange-700 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">Seguridad y Recuperación</h3>
+                    <p class="text-slate-700 mb-6 leading-relaxed">Protección activa contra robo mediante apagado remoto
+                        preventivo y detección avanzada de inhibidores de señal.</p>
+                    <ul class="space-y-3 text-sm text-slate-600">
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-orange-600 text-lg"></i>
+                            <span>Botón de pánico silencioso</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-orange-600 text-lg"></i>
+                            <span>Alertas de apertura de puertas</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-orange-600 text-lg"></i>
+                            <span>Geocercas de seguridad</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-orange-600 text-lg"></i>
+                            <span>Detección de jamming GPS</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div
+                    class="service-card bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl border border-blue-200 shadow-lg">
+                    <div class="bg-blue-200 w-16 h-16 flex items-center justify-center rounded-2xl mb-6">
+                        <i class="fa-solid fa-truck-fast text-blue-700 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">Gestión de Flotas B2B</h3>
+                    <p class="text-slate-700 mb-6 leading-relaxed">Optimización de costos operativos para empresas de
+                        transporte con análisis detallado de rendimiento.</p>
+                    <ul class="space-y-3 text-sm text-slate-600">
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-blue-600 text-lg"></i>
+                            <span>Control de combustible</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-blue-600 text-lg"></i>
+                            <span>Análisis de conducción</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-blue-600 text-lg"></i>
+                            <span>Mantenimiento preventivo</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-blue-600 text-lg"></i>
+                            <span>Reportes en tiempo real</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div
+                    class="service-card bg-gradient-to-br from-emerald-50 to-emerald-100 p-8 rounded-2xl border border-emerald-200 shadow-lg">
+                    <div class="bg-emerald-200 w-16 h-16 flex items-center justify-center rounded-2xl mb-6">
+                        <i class="fa-solid fa-code text-emerald-700 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">Desarrollo e Integración</h3>
+                    <p class="text-slate-700 mb-6 leading-relaxed">Conectamos Wialon con tus sistemas internos.
+                        Automatización pura para optimizar tu negocio.</p>
+                    <ul class="space-y-3 text-sm text-slate-600">
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>
+                            <span>Integración con ERP y CRM</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>
+                            <span>Bots de Telegram personalizados</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>
+                            <span>Dashboards Power BI</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>
+                            <span>Webhooks y APIs REST</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- PROCESS SECTION -->
+    <section class="py-20 px-6 md:px-10 bg-gradient-to-b from-slate-50 to-white">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-extrabold text-slate-900 mb-4">Proceso de Implementación</h2>
+                <p class="text-xl text-slate-600">Desde la cotización hasta el monitoreo activo en 4 pasos simples</p>
+            </div>
+
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="step-card bg-white p-8 rounded-2xl border-2 border-orange-200 shadow-lg text-center">
+                    <div
+                        class="bg-orange-100 w-16 h-16 flex items-center justify-center rounded-full mx-auto mb-6 text-3xl font-bold text-orange-600">
+                        1
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Asesoría</h3>
+                    <p class="text-slate-600 text-sm">Evaluamos tu flota y necesidades específicas sin compromiso.</p>
+                </div>
+
+                <div class="step-card bg-white p-8 rounded-2xl border-2 border-blue-200 shadow-lg text-center">
+                    <div
+                        class="bg-blue-100 w-16 h-16 flex items-center justify-center rounded-full mx-auto mb-6 text-3xl font-bold text-blue-600">
+                        2
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Instalación</h3>
+                    <p class="text-slate-600 text-sm">Nuestros técnicos instalan equipos Queclink de forma limpia y
+                        segura.</p>
+                </div>
+
+                <div class="step-card bg-white p-8 rounded-2xl border-2 border-emerald-200 shadow-lg text-center">
+                    <div
+                        class="bg-emerald-100 w-16 h-16 flex items-center justify-center rounded-full mx-auto mb-6 text-3xl font-bold text-emerald-600">
+                        3
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Configuración</h3>
+                    <p class="text-slate-600 text-sm">Configuramos Wialon con alertas y reportes personalizados.</p>
+                </div>
+
+                <div class="step-card bg-white p-8 rounded-2xl border-2 border-purple-200 shadow-lg text-center">
+                    <div
+                        class="bg-purple-100 w-16 h-16 flex items-center justify-center rounded-full mx-auto mb-6 text-3xl font-bold text-purple-600">
+                        4
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Monitoreo</h3>
+                    <p class="text-slate-600 text-sm">Central activa 24/7 monitoreando tus vehículos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COVERAGE SECTION -->
+    <section class="py-20 px-6 md:px-10 bg-gradient-to-r from-blue-50 to-blue-100">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-extrabold text-slate-900 mb-4">Cobertura Nacional de Instalación</h2>
+                <p class="text-xl text-slate-600">Nuestros técnicos especializados garantizan servicio de calidad en
+                    cada ciudad</p>
+            </div>
+
+            <div class="grid md:grid-cols-5 gap-4">
+                <div
+                    class="coverage-card bg-white p-6 rounded-xl shadow-lg border-2 border-blue-200 text-center hover:border-orange-500">
+                    <div class="text-4xl mb-3">📍</div>
+                    <h3 class="font-bold text-lg text-slate-900 mb-2">Bogotá</h3>
+                    <p class="text-sm text-slate-600 mb-3">Capital • Cobertura Completa</p>
+                    <div class="text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full inline-block">
+                        <i class="fa-solid fa-headset mr-1"></i> Central Principal
+                    </div>
+                </div>
+
+                <div
+                    class="coverage-card bg-white p-6 rounded-xl shadow-lg border-2 border-blue-200 text-center hover:border-orange-500">
+                    <div class="text-4xl mb-3">📍</div>
+                    <h3 class="font-bold text-lg text-slate-900 mb-2">Medellín</h3>
+                    <p class="text-sm text-slate-600 mb-3">Región Andina</p>
+                    <div class="text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full inline-block">
+                        <i class="fa-solid fa-wrench mr-1"></i> Servicio Técnico
+                    </div>
+                </div>
+
+                <div
+                    class="coverage-card bg-white p-6 rounded-xl shadow-lg border-2 border-blue-200 text-center hover:border-orange-500">
+                    <div class="text-4xl mb-3">📍</div>
+                    <h3 class="font-bold text-lg text-slate-900 mb-2">Cali</h3>
+                    <p class="text-sm text-slate-600 mb-3">Región Pacífica</p>
+                    <div class="text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full inline-block">
+                        <i class="fa-solid fa-truck mr-1"></i> Logística
+                    </div>
+                </div>
+
+                <div
+                    class="coverage-card bg-white p-6 rounded-xl shadow-lg border-2 border-blue-200 text-center hover:border-orange-500">
+                    <div class="text-4xl mb-3">📍</div>
+                    <h3 class="font-bold text-lg text-slate-900 mb-2">Villavicencio</h3>
+                    <p class="text-sm text-slate-600 mb-3">Llanos Orientales</p>
+                    <div class="text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full inline-block">
+                        <i class="fa-solid fa-car mr-1"></i> Expansión
+                    </div>
+                </div>
+
+                <div
+                    class="coverage-card bg-white p-6 rounded-xl shadow-lg border-2 border-blue-200 text-center hover:border-orange-500">
+                    <div class="text-4xl mb-3">📍</div>
+                    <h3 class="font-bold text-lg text-slate-900 mb-2">Yopal</h3>
+                    <p class="text-sm text-slate-600 mb-3">Casanare</p>
+                    <div class="text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full inline-block">
+                        <i class="fa-solid fa-tractor mr-1"></i> Agrícola
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING SECTION -->
+    <section class="py-20 px-6 md:px-10 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-extrabold text-slate-900 mb-4">Planes Flexibles</h2>
+                <p class="text-xl text-slate-600">Elige el plan que se ajuste a tus necesidades y presupuesto</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- PLAN 1 -->
+                <div class="plan-card bg-slate-50 p-8 rounded-2xl border-2 border-slate-200 shadow-lg">
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-bold text-slate-900 mb-2">Starter</h3>
+                        <p class="text-slate-600 text-sm">Para vehículos particulares</p>
+                    </div>
+                    <div class="mb-8">
+                        <span class="text-4xl font-bold text-slate-900">$49</span>
+                        <span class="text-slate-600">/mes</span>
+                    </div>
+                    <button
+                        class="w-full bg-slate-900 text-white py-3 rounded-lg font-bold hover:bg-slate-800 transition-colors mb-8">
+                        Comenzar
+                    </button>
+                    <ul class="space-y-4 text-sm text-slate-600">
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-orange-600"></i>
+                            <span>1 vehículo monitoreado</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-orange-600"></i>
+                            <span>Ubicación en tiempo real</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-orange-600"></i>
+                            <span>Alertas básicas</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-orange-600"></i>
+                            <span>Historial 30 días</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- PLAN 2 FEATURED -->
+                <div
+                    class="plan-card featured bg-gradient-to-br from-orange-500 to-orange-600 p-8 rounded-2xl border-2 border-orange-600 shadow-2xl text-white">
+                    <div
+                        class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-orange-600 text-white px-4 py-1 rounded-full text-sm font-bold">
+                        RECOMENDADO
+                    </div>
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-bold mb-2">Profesional</h3>
+                        <p class="text-orange-100 text-sm">Para pequeñas flotas</p>
+                    </div>
+                    <div class="mb-8">
+                        <span class="text-4xl font-bold">$129</span>
+                        <span class="text-orange-100">/mes</span>
+                    </div>
+                    <button
+                        class="w-full bg-white text-orange-600 py-3 rounded-lg font-bold hover:bg-slate-100 transition-colors mb-8">
+                        Solicitar Demo
+                    </button>
+                    <ul class="space-y-4 text-sm text-orange-100">
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-orange-200"></i>
+                            <span>Hasta 10 vehículos</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-orange-200"></i>
+                            <span>Rastreo ilimitado</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-orange-200"></i>
+                            <span>Alertas avanzadas</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-orange-200"></i>
+                            <span>Reportes personalizados</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-orange-200"></i>
+                            <span>Soporte prioritario</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- PLAN 3 -->
+                <div class="plan-card bg-slate-50 p-8 rounded-2xl border-2 border-slate-200 shadow-lg">
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-bold text-slate-900 mb-2">Empresa</h3>
+                        <p class="text-slate-600 text-sm">Flotas grandes personalizado</p>
+                    </div>
+                    <div class="mb-8">
+                        <span class="text-4xl font-bold text-slate-900">A Medida</span>
+                    </div>
+                    <button
+                        class="w-full border-2 border-orange-600 text-orange-600 py-3 rounded-lg font-bold hover:bg-orange-50 transition-colors mb-8">
+                        Contactar Ventas
+                    </button>
+                    <ul class="space-y-4 text-sm text-slate-600">
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-orange-600"></i>
+                            <span>Vehículos ilimitados</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-orange-600"></i>
+                            <span>API de integración</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-orange-600"></i>
+                            <span>Servidor dedicado</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-orange-600"></i>
+                            <span>Soporte 24/7 técnico</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS SECTION -->
+    <section class="py-20 px-6 md:px-10 bg-gradient-to-b from-slate-50 to-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-extrabold text-slate-900 mb-4">Lo que dicen nuestros clientes</h2>
+                <p class="text-xl text-slate-600">Historias reales de empresas que confían en RTT 24/7</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="testimonial-card bg-white p-8 rounded-2xl shadow-lg border border-slate-100">
+                    <div class="flex gap-1 mb-4">
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                    </div>
+                    <p class="text-slate-700 mb-6 italic">"RTT 24/7 fue clave para recuperar dos de nuestros vehículos
+                        robados. El servicio 24/7 realmente funciona."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-orange-200 flex items-center justify-center">
+                            <i class="fa-solid fa-user text-orange-600"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-900">Carlos García</p>
+                            <p class="text-sm text-slate-600">Transporte García, Bogotá</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card bg-white p-8 rounded-2xl shadow-lg border border-slate-100">
+                    <div class="flex gap-1 mb-4">
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                    </div>
+                    <p class="text-slate-700 mb-6 italic">"Reducimos combustible en 15% y detectamos anomalías en
+                        nuestro equipo de drivers. Un ahorro real."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-blue-200 flex items-center justify-center">
+                            <i class="fa-solid fa-user text-blue-600"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-900">María López</p>
+                            <p class="text-sm text-slate-600">Logística Andina, Medellín</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card bg-white p-8 rounded-2xl shadow-lg border border-slate-100">
+                    <div class="flex gap-1 mb-4">
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                    </div>
+                    <p class="text-slate-700 mb-6 italic">"La integración con nuestro sistema fue fluida. Los técnicos
+                        de RTT son muy profesionales."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-emerald-200 flex items-center justify-center">
+                            <i class="fa-solid fa-user text-emerald-600"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-900">Javier Rodríguez</p>
+                            <p class="text-sm text-slate-600">TechFleet Solutions, Villavicencio</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="py-20 px-6 md:px-10 bg-white">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-extrabold text-slate-900 mb-4">Preguntas Frecuentes</h2>
+                <p class="text-xl text-slate-600">Resuelve tus dudas sobre nuestros servicios</p>
+            </div>
+
+            <div class="space-y-4">
+                <div class="faq-item bg-slate-50 rounded-xl border border-slate-200">
+                    <button
+                        class="w-full px-8 py-6 flex justify-between items-center hover:bg-slate-100 transition-colors font-bold text-left text-slate-900"
+                        onclick="this.parentElement.classList.toggle('active')">
+                        <span>¿Cuánto tiempo toma la instalación?</span>
+                        <i class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div class="faq-answer px-8 text-slate-600">
+                        La instalación típicamente toma entre 1-2 horas dependiendo del vehículo. Nuestros técnicos
+                        coordinan horarios flexibles.
+                    </div>
+                </div>
+
+                <div class="faq-item bg-slate-50 rounded-xl border border-slate-200">
+                    <button
+                        class="w-full px-8 py-6 flex justify-between items-center hover:bg-slate-100 transition-colors font-bold text-left text-slate-900"
+                        onclick="this.parentElement.classList.toggle('active')">
+                        <span>¿Puedo rastrear múltiples vehículos?</span>
+                        <i class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div class="faq-answer px-8 text-slate-600">
+                        Sí, nuestros planes profesional y empresa permiten monitorear múltiples vehículos desde un único
+                        dashboard.
+                    </div>
+                </div>
+
+                <div class="faq-item bg-slate-50 rounded-xl border border-slate-200">
+                    <button
+                        class="w-full px-8 py-6 flex justify-between items-center hover:bg-slate-100 transition-colors font-bold text-left text-slate-900"
+                        onclick="this.parentElement.classList.toggle('active')">
+                        <span>¿Qué tan preciso es el GPS?</span>
+                        <i class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div class="faq-answer px-8 text-slate-600">
+                        Los equipos Queclink ofrecen precisión de 5-10 metros en condiciones normales, con actualización
+                        cada 30 segundos.
+                    </div>
+                </div>
+
+                <div class="faq-item bg-slate-50 rounded-xl border border-slate-200">
+                    <button
+                        class="w-full px-8 py-6 flex justify-between items-center hover:bg-slate-100 transition-colors font-bold text-left text-slate-900"
+                        onclick="this.parentElement.classList.toggle('active')">
+                        <span>¿Hay contrato a largo plazo?</span>
+                        <i class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div class="faq-answer px-8 text-slate-600">
+                        No, ofrecemos planes mensuales sin compromiso de contrato. Puedes cancelar en cualquier momento.
+                    </div>
+                </div>
+
+                <div class="faq-item bg-slate-50 rounded-xl border border-slate-200">
+                    <button
+                        class="w-full px-8 py-6 flex justify-between items-center hover:bg-slate-100 transition-colors font-bold text-left text-slate-900"
+                        onclick="this.parentElement.classList.toggle('active')">
+                        <span>¿Es compatible con mi vehículo?</span>
+                        <i class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div class="faq-answer px-8 text-slate-600">
+                        Los equipos Queclink son compatibles con 99% de vehículos diésel y gasolina. Consulta con
+                        nuestro equipo de asesoría.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA SECTION -->
+    <section class="bg-gradient-to-r from-slate-900 via-slate-800 to-orange-900 px-6 md:px-10 py-20 text-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-6">¿Listo para Proteger tu Flota?</h2>
+            <p class="text-xl text-slate-300 mb-10 max-w-2xl mx-auto">Solicita una demostración personalizada sin costo.
+                Nuestro equipo de asesoría se contactará en 24 horas.</p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="https://wa.me/TUNUMERO"
+                    class="bg-accent-orange hover:bg-orange-700 text-white px-10 py-4 rounded-lg font-bold text-lg shadow-xl transition-all transform hover:scale-105 flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp"></i> Contactar por WhatsApp
+                </a>
+                <a href="#"
+                    class="border-2 border-white hover:bg-white hover:text-slate-900 text-white px-10 py-4 rounded-lg font-bold text-lg transition-all">
+                    <i class="fa-solid fa-calendar mr-2"></i> Agendar Demo
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-300 px-10 py-12">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h4 class="font-bold text-white mb-4 text-lg">RTT 24/7</h4>
+                    <p class="text-sm leading-relaxed">Soluciones completas de rastreo GPS para vehículos y flotas en
+                        Colombia con tecnología de punta.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4 text-lg">Servicios</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="servicios.html" class="hover:text-orange-500 transition-colors">Monitoreo GPS</a>
+                        </li>
+                        <li><a href="servicios.html" class="hover:text-orange-500 transition-colors">Alertas
+                                Inteligentes</a></li>
+                        <li><a href="servicios.html" class="hover:text-orange-500 transition-colors">Integración API</a>
+                        </li>
+                        <li><a href="servicios.html" class="hover:text-orange-500 transition-colors">Reportes
+                                Analíticos</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4 text-lg">Compañía</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="index.html" class="hover:text-orange-500 transition-colors">Inicio</a></li>
+                        <li><a href="servicios.html" class="hover:text-orange-500 transition-colors">Servicios</a></li>
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Contacto</a></li>
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Soporte 24/7</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4 text-lg">Síguenos</h4>
+                    <div class="flex gap-4 text-xl">
+                        <a href="#" class="hover:text-orange-500 transition-colors"><i
+                                class="fa-brands fa-facebook"></i></a>
+                        <a href="#" class="hover:text-orange-500 transition-colors"><i
+                                class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="hover:text-orange-500 transition-colors"><i
+                                class="fa-brands fa-whatsapp"></i></a>
+                        <a href="#" class="hover:text-orange-500 transition-colors"><i
+                                class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-slate-700 pt-8 flex flex-col md:flex-row justify-between items-center text-sm">
+                <p>© 2024 RTT 24/7. Todos los derechos reservados.</p>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-orange-500 transition-colors underline">Política de Privacidad</a>
+                    <a href="#" class="hover:text-orange-500 transition-colors underline">Términos de Servicio</a>
+                    <a href="#" class="hover:text-orange-500 transition-colors underline">Integraciones API</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Toggle
+        document.querySelectorAll('.faq-item button').forEach(button => {
+            button.addEventListener('click', function () {
+                this.parentElement.classList.toggle('active');
+                const icon = this.querySelector('i');
+                icon.style.transform = icon.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
+            });
+        });
+    </script>
+
+</body>
+
+</html>
