@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTT 24/7 | RealTimeTracking - Monitoreo GPS Colombia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+        }
+
+        .accent-orange {
+            color: #f97316;
+        }
+
+        .bg-accent-orange {
+            background-color: #f97316;
+        }
+
+        .location-pin {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .coverage-card {
+            transition: all 0.3s ease;
+        }
+
+        .coverage-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(249, 115, 22, 0.15);
+        }
+
+        .map-section {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+
+        .city-dot {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .city-dot::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background-color: #f97316;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(249, 115, 22, 0.6);
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="font-sans text-slate-800 bg-slate-50">
+
+    <nav class="flex justify-between items-center px-6 md:px-10 py-5 bg-white shadow-sm sticky top-0 z-50">
+        <div class="flex items-center gap-2">
+            <a href="index.html" class="flex items-center gap-2">
+                <div class="font-bold text-2xl tracking-tighter text-slate-900">RTT <span
+                        class="accent-orange">24/7</span></div>
+            </a>
+        </div>
+        <div class="hidden md:flex gap-8 font-medium text-sm text-slate-600">
+            <a href="index.html" class="hover:text-orange-600">Inicio</a>
+            <a href="servicios.html" class="hover:text-orange-600">Servicios</a>
+            <a href="plataforma.html" class="text-orange-600 font-bold">Plataforma</a>
+            <a href="/contacto.html" class="hover:text-orange-600">Contacto</a>
+        </div>
+        <button
+            class="bg-slate-900 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-black transition-all">
+            Acceso Clientes
+        </button>
+    </nav>
+
+    <header class="py-16 px-6 text-center max-w-5xl mx-auto">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6">El Centro de Control en tu Bolsillo</h1>
+        <p class="text-lg text-slate-600 mb-10">
+            Utilizamos el ecosistema <strong>Wialon</strong>, la plataforma de telemática más estable del mundo,
+            personalizada por <strong>RTT 24/7</strong> para las carreteras de Colombia.
+        </p>
+
+        <div class="browser-mockup shadow-2xl bg-white overflow-hidden mx-auto mb-20">
+            <img src="/imagenes/interfazRTT24.png" alt="Wialon Interface RTT 24/7" class="w-full h-auto">
+        </div>
+    </header>
+
+    <section class="py-16 px-6 md:px-20 bg-white">
+        <div class="grid md:grid-cols-2 gap-16 items-center">
+            <div>
+                <h2 class="text-3xl font-bold mb-6 italic">¿Por qué nuestra plataforma es diferente?</h2>
+                <div class="space-y-6 features-container">
+                    <div class="flex gap-4 feature-item transition-all duration-500">
+                        <div class="text-orange-500 text-xl"><i class="fa-solid fa-bolt"></i></div>
+                        <div>
+                            <h4 class="font-bold">Actualización cada 2 a 10 segundos</h4>
+                            <p class="text-sm text-slate-500">Sin saltos en el mapa. Rastreo fluido para una ubicación
+                                real exacta.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 feature-item transition-all duration-500">
+                        <div class="text-blue-500 text-xl"><i class="fa-solid fa-map-location-dot"></i></div>
+                        <div>
+                            <h4 class="font-bold">Mapas de Alta Precisión</h4>
+                            <p class="text-sm text-slate-500">Google Maps, OpenStreetMap y capas satelitales
+                                actualizadas.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 feature-item transition-all duration-500">
+                        <div class="text-emerald-500 text-xl"><i class="fa-solid fa-file-export"></i></div>
+                        <div>
+                            <h4 class="font-bold">Reportes en un Clic</h4>
+                            <p class="text-sm text-slate-500">Descarga PDF o Excel con paradas, rutas, excesos de
+                                velocidad y consumo de combustible.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-slate-100 p-8 rounded-3xl border border-dashed border-slate-300">
+                <h3 class="text-xl font-bold mb-4 text-center">Disponible en App Store y Google Play</h3>
+                <div class="flex flex-col gap-4 items-center">
+                    <div class="flex gap-4">
+                        <i class="fa-brands fa-apple text-5xl"></i>
+                        <i class="fa-brands fa-google-play text-4xl"></i>
+                    </div>
+                    <p class="text-center text-slate-500 text-sm italic">"Tu tranquilidad no tiene horario. Monitorea
+                        desde cualquier parte del mundo."</p>
+                    <button
+                        class="mt-4 bg-orange-500 text-white px-6 py-2 rounded-full font-bold hover:bg-orange-600 transition-all">
+                        Solicitar Usuario Demo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 px-6 bg-gradient-to-r from-orange-50 to-blue-50 text-center">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-12">Números que Hablan por Sí Solos</h2>
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="stat-item">
+                    <div class="text-4xl font-bold text-orange-600 mb-2" data-target="5000">0</div>
+                    <p class="text-slate-600">Vehículos Monitoreados</p>
+                </div>
+                <div class="stat-item">
+                    <div class="text-4xl font-bold text-blue-600 mb-2" data-target="99.9">0</div>
+                    <p class="text-slate-600">% Uptime</p>
+                </div>
+                <div class="stat-item">
+                    <div class="text-4xl font-bold text-green-600 mb-2" data-target="24">0</div>
+                    <p class="text-slate-600">Horas de Monitoreo</p>
+                </div>
+                <div class="stat-item">
+                    <div class="text-4xl font-bold text-purple-600 mb-2" data-target="150">0</div>
+                    <p class="text-slate-600">Clientes Satisfechos</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 px-6 bg-slate-900 text-white text-center">
+        <div class="max-w-3xl mx-auto">
+            <span class="text-orange-500 font-mono text-sm uppercase tracking-widest font-bold">Power for
+                Developers</span>
+            <h2 class="text-3xl font-bold mt-4 mb-6">Integración Vía API y Webhooks</h2>
+            <p class="text-slate-400 mb-8">
+                Como desarrolladores, entendemos que tu empresa necesita datos, no solo puntos en un mapa. Con RTT 24/7
+                puedes conectar los datos de tu flota con tus propios sistemas internos.
+            </p>
+            <div class="flex justify-center gap-4 text-slate-300 text-xs font-mono">
+                <span class="bg-slate-800 px-3 py-1 rounded border border-slate-700">JSON</span>
+                <span class="bg-slate-800 px-3 py-1 rounded border border-slate-700">REST API</span>
+                <span class="bg-slate-800 px-3 py-1 rounded border border-slate-700">MQTT</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-300 px-10 py-12">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h4 class="font-bold text-white mb-4">RTT 24/7</h4>
+                    <p class="text-sm">Soluciones de rastreo GPS para vehículos y flotas en Colombia.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Servicios</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Monitoreo GPS</a></li>
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Alertas Inteligentes</a></li>
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Reportes</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Compañía</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Acerca de</a></li>
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Contacto</a></li>
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Soporte</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Síguenos</h4>
+                    <div class="flex gap-4 text-xl">
+                        <a href="#" title="Facebook" aria-label="Facebook"
+                            class="hover:text-orange-500 transition-colors"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#" title="Instagram" aria-label="Instagram"
+                            class="hover:text-orange-500 transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" title="WhatsApp" aria-label="WhatsApp"
+                            class="hover:text-orange-500 transition-colors"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="#" title="LinkedIn" aria-label="LinkedIn"
+                            class="hover:text-orange-500 transition-colors"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-slate-700 pt-8 flex flex-col md:flex-row justify-between items-center text-sm">
+                <p>© 2024 RTT 24/7. Todos los derechos reservados.</p>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-orange-500 transition-colors underline">Política de Privacidad</a>
+                    <a href="#" class="hover:text-orange-500 transition-colors underline">Términos de Servicio</a>
+                    <a href="#" class="hover:text-orange-500 transition-colors underline">Integraciones API</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animaciones de scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observar secciones para animar
+        document.querySelectorAll('section, header').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Animación del mockup del navegador
+        const mockup = document.querySelector('.browser-mockup');
+        let scale = 1;
+        let direction = 0.001;
+
+        function animateMockup() {
+            scale += direction;
+            if (scale > 1.05 || scale < 0.95) direction *= -1;
+            mockup.style.transform = `scale(${scale})`;
+            requestAnimationFrame(animateMockup);
+        }
+        animateMockup();
+
+        // Animación de contadores
+        const statsSection = document.querySelector('section.bg-gradient-to-r');
+        const statObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    statObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        if (statsSection) {
+            statObserver.observe(statsSection);
+        }
+
+        function animateCounters() {
+            document.querySelectorAll('.stat-item div[data-target]').forEach(counter => {
+                const target = parseFloat(counter.getAttribute('data-target'));
+                const increment = target / 100;
+                let current = 0;
+
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    counter.textContent = target % 1 === 0 ? Math.floor(current) : current.toFixed(1) + '%';
+                }, 30);
+            });
+        }
+
+        // Efecto de typing en el título
+        const title = document.querySelector('h1');
+        const originalText = title.textContent;
+        title.textContent = '';
+        let i = 0;
+
+        function typeWriter() {
+            if (i < originalText.length) {
+                title.textContent += originalText.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100);
+            }
+        }
+        setTimeout(typeWriter, 500);
+    </script>
+
+</body>
+
+</html>

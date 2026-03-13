@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTT 24/7 | RealTimeTracking - Monitoreo GPS Colombia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+        }
+
+        .accent-orange {
+            color: #f97316;
+        }
+
+        .bg-accent-orange {
+            background-color: #f97316;
+        }
+
+        .location-pin {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .coverage-card {
+            transition: all 0.3s ease;
+        }
+
+        .coverage-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(249, 115, 22, 0.15);
+        }
+
+        .map-section {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+
+        .city-dot {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .city-dot::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background-color: #f97316;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(249, 115, 22, 0.6);
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-slide-in-left {
+            animation: slideInLeft 1s ease-out;
+        }
+
+        .animate-slide-in-right {
+            animation: slideInRight 1s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .glow-text {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #f97316, 0 0 10px #f97316, 0 0 15px #f97316;
+            }
+
+            to {
+                text-shadow: 0 0 10px #f97316, 0 0 20px #f97316, 0 0 30px #f97316;
+            }
+        }
+
+        .map-container {
+            position: relative;
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .map-pin {
+            position: absolute;
+            left: var(--x, 50%);
+            top: var(--y, 50%);
+            width: 18px;
+            height: 18px;
+            background: rgba(249, 115, 22, 0.9);
+            border: 2px solid white;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transform: translate(-50%, -50%);
+            animation: bounce 2s infinite;
+        }
+
+        .map-pin:hover {
+            transform: translate(-50%, -50%) scale(1.4);
+            box-shadow: 0 8px 20px rgba(249, 115, 22, 0.5);
+        }
+
+        .testimonial-slider {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonial-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .testimonial-slide {
+            min-width: 100%;
+            flex-shrink: 0;
+        }
+
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: #cbd5e1;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .dot.active {
+            background: #f97316;
+        }
+
+        .animated-bg {
+            background: linear-gradient(-45deg, #ffffff, #f8fafc, #e2e8f0, #f1f5f9);
+            background-size: 400% 400%;
+            animation: gradientShift 10s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .form-progress {
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, #f97316, #ea580c);
+            transition: width 0.3s ease;
+        }
+
+        .testimonial-card {
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #25d366;
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .map-tooltip {
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 8px 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            font-size: 14px;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .map-tooltip.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .coverage-details {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .coverage-item {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+
+        .coverage-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(249, 115, 22, 0.4);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        }
+
+        .coverage-item.active {
+            border-color: rgba(249, 115, 22, 0.7);
+            box-shadow: 0 8px 20px rgba(249, 115, 22, 0.18);
+        }
+
+        .map-pin.active {
+            transform: translate(-50%, -50%) scale(1.6);
+            box-shadow: 0 10px 25px rgba(249, 115, 22, 0.5);
+        }
+    </style>
+</head>
+
+<body class="font-sans text-slate-800 bg-slate-50">
+
+    <nav class="flex justify-between items-center px-6 md:px-10 py-5 bg-white shadow-sm sticky top-0 z-50">
+        <div class="flex items-center gap-2">
+            <a href="index.html" class="flex items-center gap-2">
+                <div class="font-bold text-2xl tracking-tighter text-slate-900">RTT <span
+                        class="accent-orange">24/7</span></div>
+            </a>
+        </div>
+        <div class="hidden md:flex gap-8 font-medium text-sm text-slate-600">
+            <a href="index.html" class="hover:text-orange-600">Inicio</a>
+            <a href="servicios.html" class="hover:text-orange-600">Servicios</a>
+            <a href="plataforma.html" class="hover:text-orange-600">Plataforma</a>
+            <a href="contacto.html" class="text-orange-600 font-bold">Contacto</a>
+        </div>
+        <a href="https://wa.me/TUNUMERO"
+            class="bg-green-500 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-green-600 transition-all flex items-center gap-2">
+            <i class="fa-brands fa-whatsapp"></i> WhatsApp
+        </a>
+    </nav>
+
+    <header class="py-12 px-6 text-center animated-bg">
+        <h1 class="text-4xl font-extrabold text-slate-900 glow-text">¿Hablamos de tu seguridad?</h1>
+        <p class="text-slate-500 mt-3 text-lg">Estamos listos para agendar tu instalación en tiempo récord.</p>
+    </header>
+
+    <section class="py-16 px-6 bg-gradient-to-r from-orange-50 to-blue-50 text-center animate-slide-in-left">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-12">Confianza que se Mide en Números</h2>
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="stat-item">
+                    <div class="text-4xl font-bold text-orange-600 mb-2" data-target="2500">0</div>
+                    <p class="text-slate-600">Instalaciones Realizadas</p>
+                </div>
+                <div class="stat-item">
+                    <div class="text-4xl font-bold text-blue-600 mb-2" data-target="6">0</div>
+                    <p class="text-slate-600">Ciudades Cubiertas</p>
+                </div>
+                <div class="stat-item">
+                    <div class="text-4xl font-bold text-green-600 mb-2" data-target="24">0</div>
+                    <p class="text-slate-600">Horas de Soporte</p>
+                </div>
+                <div class="stat-item">
+                    <div class="text-4xl font-bold text-purple-600 mb-2" data-target="98">0</div>
+                    <p class="text-slate-600">% Satisfacción Cliente</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-6 pb-20 animate-slide-in-right">
+        <div class="grid md:grid-cols-2 gap-12">
+
+            <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
+                <h2 class="text-2xl font-bold mb-6 italic text-slate-900">Envíanos un mensaje</h2>
+                <form action="#" method="POST" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Nombre Completo</label>
+                        <input type="text" placeholder="Ej. Juan Pérez"
+                            class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-orange-500 outline-none transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">WhatsApp de contacto</label>
+                        <input type="tel" placeholder="Ej. 310 000 0000"
+                            class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-orange-500 outline-none transition-all">
+                    </div>
+                    <div>
+                        <label for="ciudad-interes" class="block text-sm font-bold text-slate-700 mb-1">Ciudad de
+                            Interés</label>
+                        <select id="ciudad-interes"
+                            class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-orange-500 outline-none transition-all">
+                            <option>Bogotá</option>
+                            <option>Medellín</option>
+                            <option>Yopal</option>
+                            <option>Villavicencio</option>
+                            <option>Ibagué</option>
+                            <option>Otra ciudad</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">¿Qué necesitas proteger?</label>
+                        <textarea rows="3" placeholder="Ej. Una flota de 5 camiones, mi vehículo particular, etc."
+                            class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-orange-500 outline-none transition-all"></textarea>
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-accent-orange text-white py-4 rounded-xl font-bold text-lg hover:bg-orange-700 shadow-lg shadow-orange-200 transition-all">
+                        Enviar Solicitud de Cotización
+                    </button>
+                </form>
+            </div>
+
+            <div class="flex flex-col justify-center">
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-location-dot accent-orange"></i> Cobertura Técnica Local
+                        </h3>
+                        <p class="text-slate-600">Contamos con técnicos certificados y herramientas propias en cada
+                            punto para instalaciones inmediatas y mantenimiento en sitio.</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                            <span class="block font-bold text-slate-900">Yopal / Villavicencio</span>
+                            <span class="text-xs text-orange-600 font-mono">Zona Llanos</span>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                            <span class="block font-bold text-slate-900">Medellín</span>
+                            <span class="text-xs text-blue-600 font-mono">Zona Antioquia</span>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                            <span class="block font-bold text-slate-900">Bogotá / Ibagué</span>
+                            <span class="text-xs text-emerald-600 font-mono">Zona Centro</span>
+                        </div>
+                        <div class="bg-slate-900 p-4 rounded-2xl text-white shadow-sm">
+                            <span class="block font-bold italic underline">¡Disponibilidad!</span>
+                            <span class="text-[10px] uppercase">Lunes a Domingo</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-6 border-t border-slate-200">
+                        <h4 class="font-bold text-slate-900 mb-2">Canales de Emergencia 24/7</h4>
+                        <div class="flex gap-4">
+                            <a href="#" class="text-slate-600 hover:text-orange-600 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-envelope"></i> soporte@rtt247.com
+                            </a>
+                            <a href="#" class="text-slate-600 hover:text-orange-600 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-phone"></i> +57 3XX XXX XXXX
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="py-16 px-6 bg-slate-50 animate-slide-in-left">
+        <div class="max-w-6xl mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-12">Nuestra Cobertura en Colombia</h2>
+            <div class="map-container h-96 flex items-center justify-center relative">
+                <div class="map-area w-full h-full rounded-3xl overflow-hidden relative shadow-lg">
+                    <div class="absolute inset-0 bg-gradient-to-br from-sky-100 via-white to-sky-100"></div>
+                    <div
+                        class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(249,115,22,0.15),transparent_60%)]">
+                    </div>
+
+                    <!-- Pins -->
+                    <button class="map-pin" data-x="46%" data-y="22%" data-city="Bogotá"
+                        data-info="Centro de operaciones principal con instalaciones 24/7."
+                        title="Pin for Bogotá"></button>
+                    <button class="map-pin" data-x="57%" data-y="28%" data-city="Medellín"
+                        data-info="Cobertura completa en Antioquia con técnicos especializados."
+                        title="Pin for Medellín"></button>
+                    <button class="map-pin" data-x="35%" data-y="38%" data-city="Yopal"
+                        data-info="Servicio en Llanos Orientales con atención prioritaria."
+                        title="Pin for Yopal"></button>
+                    <button class="map-pin" data-x="41%" data-y="45%" data-city="Villavicencio"
+                        data-info="Cobertura regional Meta con instalaciones exprés."
+                        title="Pin for Villavicencio"></button>
+                    <button class="map-pin" data-x="50%" data-y="53%" data-city="Ibagué"
+                        data-info="Centro Tolima con soporte técnico avanzado y monitoreo remoto."
+                        title="Pin for Ibagué"></button>
+
+                    <div id="map-tooltip" class="map-tooltip"></div>
+                </div>
+            </div>
+
+            <div class="coverage-details">
+                <div class="coverage-item" data-city="Bogotá">
+                    <h4 class="font-bold text-slate-900 mb-2">Bogotá</h4>
+                    <p class="text-sm text-slate-600">Centro de operaciones principal con instalaciones 24/7 y soporte
+                        prioritario.</p>
+                    <p class="text-xs text-orange-600 mt-1">+57 1 XXX XXXX</p>
+                </div>
+                <div class="coverage-item" data-city="Medellín">
+                    <h4 class="font-bold text-slate-900 mb-2">Medellín</h4>
+                    <p class="text-sm text-slate-600">Cobertura completa en Antioquia con técnicos especializados en la
+                        zona.</p>
+                    <p class="text-xs text-orange-600 mt-1">+57 4 XXX XXXX</p>
+                </div>
+                <div class="coverage-item" data-city="Yopal">
+                    <h4 class="font-bold text-slate-900 mb-2">Yopal</h4>
+                    <p class="text-sm text-slate-600">Servicio dedicado en Llanos Orientales con atención prioritaria.
+                    </p>
+                    <p class="text-xs text-orange-600 mt-1">+57 8 XXX XXXX</p>
+                </div>
+                <div class="coverage-item" data-city="Villavicencio">
+                    <h4 class="font-bold text-slate-900 mb-2">Villavicencio</h4>
+                    <p class="text-sm text-slate-600">Cobertura regional Meta con instalaciones exprés disponibles.</p>
+                    <p class="text-xs text-orange-600 mt-1">+57 8 XXX XXXX</p>
+                </div>
+                <div class="coverage-item" data-city="Ibagué">
+                    <h4 class="font-bold text-slate-900 mb-2">Ibagué</h4>
+                    <p class="text-sm text-slate-600">Centro Tolima con soporte técnico avanzado y monitoreo remoto.</p>
+                    <p class="text-xs text-orange-600 mt-1">+57 8 XXX XXXX</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 px-6 bg-white animate-slide-in-right">
+        <div class="max-w-6xl mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-12">Lo que Dicen Nuestros Clientes</h2>
+            <div class="testimonial-slider">
+                <div class="testimonial-track">
+                    <div class="testimonial-slide">
+                        <div class="max-w-2xl mx-auto bg-slate-50 p-8 rounded-2xl">
+                            <div class="flex items-center justify-center mb-6">
+                                <div
+                                    class="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-2xl">
+                                    J</div>
+                            </div>
+                            <p class="text-slate-600 italic text-lg mb-4">"RTT 24/7 transformó mi negocio. Ahora tengo
+                                control total de mi flota y he reducido pérdidas en un 40%."</p>
+                            <h4 class="font-bold">Juan Carlos</h4>
+                            <p class="text-sm text-slate-500">Transportista, Bogotá</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="max-w-2xl mx-auto bg-slate-50 p-8 rounded-2xl">
+                            <div class="flex items-center justify-center mb-6">
+                                <div
+                                    class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-2xl">
+                                    M</div>
+                            </div>
+                            <p class="text-slate-600 italic text-lg mb-4">"El soporte es increíble. Siempre disponibles
+                                y las instalaciones son rápidas. ¡Altamente recomendado!"</p>
+                            <h4 class="font-bold">María González</h4>
+                            <p class="text-sm text-slate-500">Empresa de Logística, Medellín</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="max-w-2xl mx-auto bg-slate-50 p-8 rounded-2xl">
+                            <div class="flex items-center justify-center mb-6">
+                                <div
+                                    class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-2xl">
+                                    C</div>
+                            </div>
+                            <p class="text-slate-600 italic text-lg mb-4">"Desde que instalé el GPS, duermo tranquilo.
+                                La plataforma es intuitiva y las alertas me salvan."</p>
+                            <h4 class="font-bold">Carlos Rodríguez</h4>
+                            <p class="text-sm text-slate-500">Propietario de Vehículos, Yopal</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-dots">
+                    <div class="dot active" data-slide="0"></div>
+                    <div class="dot" data-slide="1"></div>
+                    <div class="dot" data-slide="2"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-300 px-10 py-12">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h4 class="font-bold text-white mb-4">RTT 24/7</h4>
+                    <p class="text-sm">Soluciones de rastreo GPS para vehículos y flotas en Colombia.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Servicios</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Monitoreo GPS</a></li>
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Alertas Inteligentes</a></li>
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Reportes</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Compañía</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Acerca de</a></li>
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Contacto</a></li>
+                        <li><a href="#" class="hover:text-orange-500 transition-colors">Soporte</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Síguenos</h4>
+                    <div class="flex gap-4 text-xl">
+                        <a href="#" title="Facebook" aria-label="Facebook"
+                            class="hover:text-orange-500 transition-colors"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#" title="Instagram" aria-label="Instagram"
+                            class="hover:text-orange-500 transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" title="WhatsApp" aria-label="WhatsApp"
+                            class="hover:text-orange-500 transition-colors"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="#" title="LinkedIn" aria-label="LinkedIn"
+                            class="hover:text-orange-500 transition-colors"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-slate-700 pt-8 flex flex-col md:flex-row justify-between items-center text-sm">
+                <p>© 2024 RTT 24/7. Todos los derechos reservados.</p>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-orange-500 transition-colors underline">Política de Privacidad</a>
+                    <a href="#" class="hover:text-orange-500 transition-colors underline">Términos de Servicio</a>
+                    <a href="#" class="hover:text-orange-500 transition-colors underline">Integraciones API</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/TUNUMERO" class="floating-btn" title="Contactar por WhatsApp">
+        <i class="fa-brands fa-whatsapp text-2xl"></i>
+    </a>
+
+    <script>
+        // Animaciones de scroll con slide-in
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.classList.contains('animate-slide-in-left')) {
+                        entry.target.classList.add('animate-slide-in-left');
+                    } else if (entry.target.classList.contains('animate-slide-in-right')) {
+                        entry.target.classList.add('animate-slide-in-right');
+                    } else {
+                        entry.target.classList.add('animate-fade-in');
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section, header').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Efecto de glow en el título (sin typing)
+
+        // Animación de contadores
+        const statsSection = document.querySelector('section.bg-gradient-to-r');
+        const statObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    statObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        if (statsSection) {
+            statObserver.observe(statsSection);
+        }
+
+        function animateCounters() {
+            document.querySelectorAll('.stat-item div[data-target]').forEach(counter => {
+                const target = parseFloat(counter.getAttribute('data-target'));
+                const increment = target / 100;
+                let current = 0;
+
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    counter.textContent = target % 1 === 0 ? Math.floor(current) : current.toFixed(0) + '%';
+                }, 30);
+            });
+        }
+
+        // Funcionalidad del mapa
+        const tooltip = document.getElementById('map-tooltip');
+        const mapArea = document.querySelector('.map-area');
+
+        function positionTooltip(event) {
+            if (!tooltip || !mapArea) return;
+            const rect = mapArea.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            tooltip.style.left = Math.min(Math.max(x + 16, 12), rect.width - 180) + 'px';
+            tooltip.style.top = Math.min(Math.max(y - 30, 12), rect.height - 60) + 'px';
+        }
+
+        const mapPins = document.querySelectorAll('.map-pin');
+        const coverageItems = document.querySelectorAll('.coverage-item');
+
+        // Set pin positions from data attributes
+        mapPins.forEach(pin => {
+            pin.style.setProperty('--x', pin.dataset.x);
+            pin.style.setProperty('--y', pin.dataset.y);
+        });
+
+        function clearActive() {
+            mapPins.forEach(pin => pin.classList.remove('active'));
+            coverageItems.forEach(item => item.classList.remove('active'));
+        }
+
+        function highlightCity(city) {
+            clearActive();
+            const pin = document.querySelector(`.map-pin[data-city="${city}"]`);
+            const card = document.querySelector(`.coverage-item[data-city="${city}"]`);
+            if (pin) pin.classList.add('active');
+            if (card) card.classList.add('active');
+        }
+
+        mapPins.forEach(pin => {
+            pin.addEventListener('mouseenter', function () {
+                if (!tooltip) return;
+                const city = this.getAttribute('data-city');
+                const info = this.getAttribute('data-info');
+                tooltip.textContent = `${city}: ${info}`;
+                tooltip.classList.add('show');
+                highlightCity(city);
+            });
+            pin.addEventListener('mousemove', function (e) {
+                positionTooltip(e);
+            });
+            pin.addEventListener('mouseleave', function () {
+                if (!tooltip) return;
+                tooltip.classList.remove('show');
+            });
+            pin.addEventListener('click', function () {
+                const city = this.getAttribute('data-city');
+                alert(`¡Excelente elección! Contacta a nuestro equipo en ${city} para una cotización personalizada.`);
+            });
+        });
+
+        coverageItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                highlightCity(item.getAttribute('data-city'));
+            });
+            item.addEventListener('mouseleave', () => {
+                clearActive();
+            });
+            item.addEventListener('click', () => {
+                const city = item.getAttribute('data-city');
+                const pin = document.querySelector(`.map-pin[data-city="${city}"]`);
+                if (pin) {
+                    const event = new MouseEvent('mousemove', {
+                        clientX: pin.getBoundingClientRect().left,
+                        clientY: pin.getBoundingClientRect().top
+                    });
+                    pin.dispatchEvent(event);
+                    highlightCity(city);
+                }
+                alert(`¡Excelente elección! Contacta a nuestro equipo en ${city} para una cotización personalizada.`);
+            });
+        });
+
+        // Slider de testimonios
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.testimonial-slide');
+        const dots = document.querySelectorAll('.dot');
+
+        function showSlide(index) {
+            document.querySelector('.testimonial-track').style.transform = `translateX(-${index * 100}%)`;
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentSlide = index;
+                showSlide(currentSlide);
+            });
+        });
+
+        // Auto-slide
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }, 5000);
+
+        // Validación y progreso del formulario
+        const form = document.querySelector('form');
+        const progressBar = document.createElement('div');
+        progressBar.className = 'form-progress';
+        form.insertBefore(progressBar, form.firstChild);
+
+        const inputs = form.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('input', updateProgress);
+        });
+
+        function updateProgress() {
+            let filled = 0;
+            inputs.forEach(input => {
+                if (input.value.trim() !== '') filled++;
+            });
+            const progress = (filled / inputs.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        // Manejo del envío del formulario
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            // Simular envío
+            const button = form.querySelector('button');
+            const originalText = button.textContent;
+            button.textContent = 'Enviando...';
+            button.disabled = true;
+
+            setTimeout(() => {
+                button.textContent = '¡Enviado con Éxito!';
+                button.classList.add('bg-green-500', 'hover:bg-green-600');
+                button.classList.remove('bg-accent-orange', 'hover:bg-orange-700');
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                    button.classList.remove('bg-green-500', 'hover:bg-green-600');
+                    button.classList.add('bg-accent-orange', 'hover:bg-orange-700');
+                    form.reset();
+                    updateProgress();
+                }, 3000);
+            }, 2000);
+        });
+    </script>
+
+</body>
+
+</html>
