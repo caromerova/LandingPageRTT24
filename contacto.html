@@ -327,7 +327,7 @@
             <a href="plataforma.html" class="hover:text-orange-600">Plataforma</a>
             <a href="#" class="text-orange-600 font-bold">Contacto</a>
         </div>
-        <a href="https://wa.me/TUNUMERO"
+        <a href="https://wa.me/573016818367"
             class="bg-green-500 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-green-600 transition-all flex items-center gap-2">
             <i class="fa-brands fa-whatsapp"></i> WhatsApp
         </a>
@@ -616,7 +616,7 @@
         </div>
     </footer>
 
-    <a href="https://wa.me/TUNUMERO" class="floating-btn" title="Contactar por WhatsApp">
+    <a href="https://wa.me/573016818367" class="floating-btn" title="Contactar por WhatsApp">
         <i class="fa-brands fa-whatsapp text-2xl"></i>
     </a>
 
@@ -803,19 +803,52 @@
             progressBar.style.width = progress + '%';
         }
 
-        // Manejo del envío del formulario
+        // Manejo unificado del envío del formulario con WhatsApp
         form.addEventListener('submit', function (e) {
             e.preventDefault();
-            // Simular envío
+
+            // 1. Capturamos los datos ANTES de hacer cambios
+            const nombre = document.querySelector('input[placeholder="Ej. Juan Pérez"]').value.trim();
+            const telefono = document.querySelector('input[placeholder="Ej. 310 000 0000"]').value.trim();
+            const ciudad = document.querySelector('select').value;
+            const mensajeUsuario = document.querySelector('textarea').value.trim();
+
+            // 2. Validamos que los campos obligatorios estén completos
+            if (!nombre || !telefono) {
+                alert('Por favor completa nombre y teléfono de contacto');
+                return;
+            }
+
+            // 3. Elementos de la UI
             const button = form.querySelector('button');
             const originalText = button.textContent;
-            button.textContent = 'Enviando...';
+
+            // 4. Mostrar estado de envío
+            button.textContent = 'Abriendo WhatsApp...';
             button.disabled = true;
 
+            // 5. Construir mensaje WhatsApp con datos validados
+            const miNumero = "573016818367"; // ✓ Número configurado
+            const texto = `Hola *RTT 24/7* 🛰️\n\n` +
+                `*Solicitante:* ${nombre}\n` +
+                `*Teléfono:* ${telefono}\n` +
+                `*Ciudad:* ${ciudad}\n` +
+                `*Necesidad:* ${mensajeUsuario || 'No especificó'}\n\n` +
+                `_Solicitando cotización desde rtt247.com_`;
+
+            const urlWhatsApp = `https://wa.me/${miNumero}?text=${encodeURIComponent(texto)}`;
+
+            // 6. Esperar un momento y luego abrir WhatsApp
             setTimeout(() => {
-                button.textContent = '¡Enviado con Éxito!';
+                // Abrir WhatsApp en nueva pestaña
+                window.open(urlWhatsApp, '_blank');
+
+                // Mostrar éxito
+                button.textContent = '✓ WhatsApp Abierto';
                 button.classList.add('bg-green-500', 'hover:bg-green-600');
                 button.classList.remove('bg-accent-orange', 'hover:bg-orange-700');
+
+                // Resetear después de 2 segundos
                 setTimeout(() => {
                     button.textContent = originalText;
                     button.disabled = false;
@@ -823,11 +856,10 @@
                     button.classList.add('bg-accent-orange', 'hover:bg-orange-700');
                     form.reset();
                     updateProgress();
-                }, 3000);
-            }, 2000);
+                }, 2000);
+            }, 500);
         });
     </script>
-
 </body>
 
 </html>
