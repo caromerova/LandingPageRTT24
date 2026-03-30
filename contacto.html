@@ -327,8 +327,8 @@
             <a href="plataforma.html" class="hover:text-orange-600">Plataforma</a>
             <a href="#" class="text-orange-600 font-bold">Contacto</a>
         </div>
-        <a href="https://wa.me/573016818367"
-            class="bg-green-500 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-green-600 transition-all flex items-center gap-2">
+        <a onclick="abrirWhatsAppContacto()" href="javascript:void(0)"
+            class="bg-green-500 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-green-600 transition-all flex items-center gap-2 cursor-pointer">
             <i class="fa-brands fa-whatsapp"></i> WhatsApp
         </a>
     </nav>
@@ -369,19 +369,20 @@
                 <h2 class="text-2xl font-bold mb-6 italic text-slate-900">Envíanos un mensaje</h2>
                 <form action="#" method="POST" class="space-y-4">
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1">Nombre Completo</label>
-                        <input type="text" placeholder="Ej. Juan Pérez"
+                        <label for="nombre" class="block text-sm font-bold text-slate-700 mb-1">Nombre Completo</label>
+                        <input id="nombre" type="text" placeholder="Ej. Juan Pérez"
                             class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-orange-500 outline-none transition-all">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1">WhatsApp de contacto</label>
-                        <input type="tel" placeholder="Ej. 310 000 0000"
+                        <label for="telefono" class="block text-sm font-bold text-slate-700 mb-1">WhatsApp de
+                            contacto</label>
+                        <input id="telefono" type="tel" placeholder="Ej. 310 000 0000"
                             class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-orange-500 outline-none transition-all">
                     </div>
                     <div>
-                        <label for="ciudad-interes" class="block text-sm font-bold text-slate-700 mb-1">Ciudad de
+                        <label for="ciudad" class="block text-sm font-bold text-slate-700 mb-1">Ciudad de
                             Interés</label>
-                        <select id="ciudad-interes"
+                        <select id="ciudad"
                             class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-orange-500 outline-none transition-all">
                             <option>Bogotá</option>
                             <option>Medellín</option>
@@ -392,9 +393,15 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1">¿Qué necesitas proteger?</label>
-                        <textarea rows="3" placeholder="Ej. Una flota de 5 camiones, mi vehículo particular, etc."
+                        <label for="mensaje" class="block text-sm font-bold text-slate-700 mb-1">¿Qué necesitas
+                            proteger?</label>
+                        <textarea id="mensaje" rows="3"
+                            placeholder="Ej. Una flota de 5 camiones, mi vehículo particular, etc."
                             class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-orange-500 outline-none transition-all"></textarea>
+                    </div>
+                    <div id="success-message"
+                        class="mt-4 p-4 bg-orange-50 border border-orange-200 rounded-xl text-orange-800 font-semibold opacity-0 transition-all duration-500 transform translate-y-2 hidden">
+                        ✅ ¡Solicitud preparada! Redirigiendo a WhatsApp...
                     </div>
                     <button type="submit"
                         class="w-full bg-accent-orange text-white py-4 rounded-xl font-bold text-lg hover:bg-orange-700 shadow-lg shadow-orange-200 transition-all">
@@ -435,11 +442,13 @@
                     <div class="pt-6 border-t border-slate-200">
                         <h4 class="font-bold text-slate-900 mb-2">Canales de Emergencia 24/7</h4>
                         <div class="flex gap-4">
-                            <a href="#" class="text-slate-600 hover:text-orange-600 text-sm flex items-center gap-2">
-                                <i class="fa-solid fa-envelope"></i> soporte@rtt247.com
+                            <a href="mailto:rtt247.monitoreo@gmail.com"
+                                title="Enviar correo a rtt247.monitoreo@gmail.com"
+                                class="text-slate-600 hover:text-orange-600 text-sm flex items-center gap-2 transition-colors">
+                                <i class="fa-solid fa-envelope"></i> rtt247.monitoreo@gmail.com
                             </a>
                             <a href="#" class="text-slate-600 hover:text-orange-600 text-sm flex items-center gap-2">
-                                <i class="fa-solid fa-phone"></i> +57 3XX XXX XXXX
+                                <i class="fa-solid fa-phone"></i> +57 301 681 8367
                             </a>
                         </div>
                     </div>
@@ -616,11 +625,31 @@
         </div>
     </footer>
 
-    <a href="https://wa.me/573016818367" class="floating-btn" title="Contactar por WhatsApp">
+    <a onclick="abrirWhatsAppContacto()" href="javascript:void(0)" class="floating-btn cursor-pointer"
+        title="Contactar por WhatsApp">
         <i class="fa-brands fa-whatsapp text-2xl"></i>
     </a>
 
     <script>
+        // Función centralizada para abrir WhatsApp con mensaje predeterminado
+        function abrirWhatsAppContacto() {
+            const numeroWhatsApp = "573016818367";
+
+            // Mensaje predeterminado optimizado para marketing
+            const mensajePredeterminado = `Hola 👋 *RTT 24/7*
+
+Me interesa conocer más sobre sus soluciones de GPS y rastreo vehicular.
+¿Podrían compartirme información sobre instalación y *cotizar un servicio*? 🛰️
+
+Gracias`;
+
+            // Construir URL de WhatsApp con mensaje preformateado
+            const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensajePredeterminado)}`;
+
+            // Abrir en nueva pestaña
+            window.open(urlWhatsApp, '_blank');
+        }
+
         // Animaciones de scroll con slide-in
         const observerOptions = {
             threshold: 0.1,
@@ -777,6 +806,69 @@
             });
         });
 
+        // Manejo del formulario de contacto (desactivado: se usa el manejador unificado más abajo)
+        document.querySelector('form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            return;
+
+            // Usar getElementById para capturar valores exactos por ID
+            const nombre = document.getElementById('nombre').value.trim();
+            const telefono = document.getElementById('telefono').value.trim();
+            const ciudad = document.getElementById('ciudad').value.trim();
+            const mensaje = document.getElementById('mensaje').value.trim();
+
+            // Validación: verificar que nombre y teléfono tengan contenido
+            if (!nombre) {
+                alert('Por favor, ingresa tu nombre completo.');
+                document.getElementById('nombre').focus();
+                return;
+            }
+
+            if (!telefono) {
+                alert('Por favor, ingresa tu número de WhatsApp.');
+                document.getElementById('telefono').focus();
+                return;
+            }
+
+            if (!mensaje) {
+                alert('Por favor, cuéntanos qué necesitas proteger.');
+                document.getElementById('mensaje').focus();
+                return;
+            }
+
+            // Construir mensaje personalizado para WhatsApp
+            const mensajeWhatsApp = `Hola 👋 *RTT 24/7*
+
+Soy ${nombre} de ${ciudad}.
+
+${mensaje}
+
+Mi WhatsApp: ${telefono}
+
+¿Podrían cotizarme un servicio? 🛰️
+
+Gracias`;
+
+            // Mostrar mensaje de éxito
+            const successMsg = document.getElementById('success-message');
+            successMsg.classList.remove('hidden');
+
+            // Animar entrada del mensaje
+            setTimeout(() => {
+                successMsg.classList.add('opacity-100');
+                successMsg.classList.remove('translate-y-2');
+            }, 10);
+
+            // Limpiar formulario
+            this.reset();
+
+            // Abrir WhatsApp después de mostrar el mensaje
+            setTimeout(() => {
+                const urlWhatsApp = `https://wa.me/573016818367?text=${encodeURIComponent(mensajeWhatsApp)}`;
+                window.open(urlWhatsApp, '_blank');
+            }, 2000);
+        });
+
         // Auto-slide
         setInterval(() => {
             currentSlide = (currentSlide + 1) % slides.length;
@@ -807,28 +899,37 @@
         form.addEventListener('submit', function (e) {
             e.preventDefault();
 
-            // 1. Capturamos los datos ANTES de hacer cambios
-            const nombre = document.querySelector('input[placeholder="Ej. Juan Pérez"]').value.trim();
-            const telefono = document.querySelector('input[placeholder="Ej. 310 000 0000"]').value.trim();
-            const ciudad = document.querySelector('select').value;
-            const mensajeUsuario = document.querySelector('textarea').value.trim();
+            // 1. Capturamos los datos via ID específicos
+            const nombre = document.getElementById('nombre').value.trim();
+            const telefono = document.getElementById('telefono').value.trim();
+            const ciudad = document.getElementById('ciudad').value.trim();
+            const mensajeUsuario = document.getElementById('mensaje').value.trim();
 
             // 2. Validamos que los campos obligatorios estén completos
             if (!nombre || !telefono) {
                 alert('Por favor completa nombre y teléfono de contacto');
+                if (!nombre) document.getElementById('nombre').focus();
+                else document.getElementById('telefono').focus();
                 return;
             }
 
             // 3. Elementos de la UI
             const button = form.querySelector('button');
             const originalText = button.textContent;
+            const successMsg = document.getElementById('success-message');
 
-            // 4. Mostrar estado de envío
+            // 4. Mostrar mensaje de éxito en naranja
+            successMsg.classList.remove('hidden');
+            setTimeout(() => {
+                successMsg.classList.add('opacity-100');
+                successMsg.classList.remove('translate-y-2');
+            }, 10);
+
             button.textContent = 'Abriendo WhatsApp...';
             button.disabled = true;
 
             // 5. Construir mensaje WhatsApp con datos validados
-            const miNumero = "573016818367"; // ✓ Número configurado
+            const miNumero = '573016818367';
             const texto = `Hola *RTT 24/7* 🛰️\n\n` +
                 `*Solicitante:* ${nombre}\n` +
                 `*Teléfono:* ${telefono}\n` +
@@ -843,20 +944,29 @@
                 // Abrir WhatsApp en nueva pestaña
                 window.open(urlWhatsApp, '_blank');
 
-                // Mostrar éxito
+                // Resetear inmediatamente para que el usuario vea campos vacíos al volver
+                form.reset();
+                updateProgress();
+
+                // Mostrar éxito en el botón durante breve tiempo
                 button.textContent = '✓ WhatsApp Abierto';
                 button.classList.add('bg-green-500', 'hover:bg-green-600');
                 button.classList.remove('bg-accent-orange', 'hover:bg-orange-700');
 
-                // Resetear después de 2 segundos
+                // Dejar normal despues de 1.5 seg
                 setTimeout(() => {
                     button.textContent = originalText;
                     button.disabled = false;
                     button.classList.remove('bg-green-500', 'hover:bg-green-600');
                     button.classList.add('bg-accent-orange', 'hover:bg-orange-700');
-                    form.reset();
-                    updateProgress();
-                }, 2000);
+
+                    // Ocultar mensaje de éxito visual
+                    successMsg.classList.add('opacity-0', 'translate-y-2');
+                    setTimeout(() => {
+                        successMsg.classList.add('hidden');
+                        successMsg.classList.remove('opacity-0', 'translate-y-2');
+                    }, 300);
+                }, 1500);
             }, 500);
         });
     </script>

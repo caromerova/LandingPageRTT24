@@ -173,10 +173,10 @@
             <a href="plataforma.html" class="hover:text-orange-600">Plataforma</a>
             <a href="contacto.html" class="hover:text-orange-600">Contacto</a>
         </div>
-        <button
+        <a href="https://hosting.wialon.com" target="_blank" rel="noopener noreferrer"
             class="border border-slate-300 px-5 py-2 rounded-lg text-sm font-semibold hover:bg-slate-50 flex items-center gap-2">
             <i class="fa-regular fa-user"></i> Inicia Sesión
-        </button>
+        </a>
     </nav>
 
     <header class="bg-slate-900 text-white py-20 px-6 md:px-10">
@@ -673,8 +673,8 @@
             <p class="text-xl text-slate-300 mb-10 max-w-2xl mx-auto">Solicita una demostración personalizada sin costo.
                 Nuestro equipo de asesoría se contactará en 24 horas.</p>
             <div class="flex flex-col md:flex-row justify-center gap-4">
-                <a href="https://wa.me/TUNUMERO"
-                    class="bg-accent-orange hover:bg-orange-700 text-white px-10 py-4 rounded-lg font-bold text-lg shadow-xl transition-all transform hover:scale-105 flex items-center justify-center gap-2">
+                <a onclick="abrirWhatsAppContacto()" href="javascript:void(0)"
+                    class="bg-accent-orange hover:bg-orange-700 text-white px-10 py-4 rounded-lg font-bold text-lg shadow-xl transition-all transform hover:scale-105 flex items-center justify-center gap-2 cursor-pointer">
                     <i class="fa-brands fa-whatsapp"></i> Contactar por WhatsApp
                 </a>
                 <a href="#"
@@ -712,7 +712,7 @@
                     <ul class="space-y-2 text-sm">
                         <li><a href="index.html" class="hover:text-orange-500 transition-colors">Inicio</a></li>
                         <li><a href="servicios.html" class="hover:text-orange-500 transition-colors">Servicios</a></li>
-                        <li><a href="#" class="hover:text-orange-500 transition-colors">Contacto</a></li>
+                        <li><a href="contacto.html" class="hover:text-orange-500 transition-colors">Contacto</a></li>
                         <li><a href="#" class="hover:text-orange-500 transition-colors">Soporte 24/7</a></li>
                     </ul>
                 </div>
@@ -742,6 +742,25 @@
     </footer>
 
     <script>
+        // Función centralizada para abrir WhatsApp con mensaje predeterminado
+        function abrirWhatsAppContacto() {
+            const numeroWhatsApp = "573016818367";
+
+            // Mensaje predeterminado optimizado para marketing
+            const mensajePredeterminado = `Hola 👋 *RTT 24/7*
+
+Me interesa conocer más sobre sus soluciones de GPS y rastreo vehicular.
+¿Podrían compartirme información sobre instalación y *cotizar un servicio*? 🛰️
+
+Gracias`;
+
+            // Construir URL de WhatsApp con mensaje preformateado
+            const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensajePredeterminado)}`;
+
+            // Abrir en nueva pestaña
+            window.open(urlWhatsApp, '_blank');
+        }
+
         // FAQ Toggle
         document.querySelectorAll('.faq-item button').forEach(button => {
             button.addEventListener('click', function () {
